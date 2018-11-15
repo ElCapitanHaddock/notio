@@ -1,0 +1,88 @@
+function loginenter(event) {
+  var x = event.charCode;
+  if (x == 13) {
+    log();
+  }
+}
+
+function tagenter(event) {
+  var x = event.charCode;
+  var utags = document.getElementById("taglist");
+  var tagtext;
+  var tagarray;
+  var hash = new RegExp("#");
+  var hashin = hash.test(utags.value);
+  if (x == 13 && hashin) {
+    tagtext = utags.value.replace(/ +?/g, "");
+    tagtext = tagtext.replace(/,/g, "");
+    tagarray = tagtext.split("#");
+    for (var i = 0; i < tagarray.length; i++) {
+      if (tagarray[i] == "") {
+        tagarray.splice(i, 1);
+      }
+    }
+    console.log(tagarray);
+    socket.emit('tagup', tagarray, selected);
+  }
+  else if (x == 13 && utags.value.trim().length == 0) {
+    socket.emit('tagup', [], selected);
+  }
+}
+
+
+$(".menuitems").fadeToggle( "slow", function() {});
+
+
+socket.on('returndir', function(f, ftags) {
+  if (f[0] === undefined) {
+    document.getElementById("directory").innerHTML = "<p style='margin-left:8px;font-size:12.5px;'>...</p>";
+    selected = "";
+  }
+  else {
+    tags = ftags;
+    filelist = f;
+    if (first) {
+      selected = filelist[0];
+      socket.emit('openfile', filelist[0]);
+      first = false;
+    }
+    var tempdir = "";
+    //initial
+    tempdir += "";
+    for (var i = 0; i < f.length; i ++) {
+      tempdir += "<input style='margin-left:0px;padding:5px' class='filebutton' type='button' value='" + f[i] + "' onclick='openFile()'></input><div style='height:10px'></div>";
+    }
+    document.getElementById("directory").innerHTML = tempdir;
+  }
+});
+});
+
+
+
+$("#filec").bind('keydown', function(event) {
+    if (event.ctrlKey || event.metaKey) {
+        switch (String.fromCharCode(event.which).toLowerCase()) {
+        case 's':
+            event.preventDefault();
+            if (selected != "") {
+              saveFile();
+            }
+            break;
+        
+        case 'p':
+            event.preventDefault();
+            /*
+            var childWindow = window.open('','childWindow','location=yes, menubar=yes, toolbar=yes');
+            childWindow.document.open();
+            childWindow.document.write('<html><head></head><body>');
+            childWindow.document.write("<h1 style='font-family:arial'>" + document.getElementById('filetitle').innerHTML + "</h1><div style='height:12px'>");
+            childWindow.document.write("<p style='font-family:sans-serif;font-size:13.5px'>" + document.getElementById('filec').value.replace(/\n/gi,'<br>') + "</p>");
+            childWindow.document.write('</body></html>');
+            childWindow.print();
+            childWindow.document.close();
+            childWindow.close();
+            */
+            break;
+        }
+    }
+});

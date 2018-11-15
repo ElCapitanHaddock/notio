@@ -1,0 +1,3 @@
+function execDebug(par) {
+  socket.emit('execDebug', par);
+}

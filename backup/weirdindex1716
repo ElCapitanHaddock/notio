@@ -1,0 +1,1289 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>Not.IO</title>
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN" />
+    <meta name="description" content="Not.IO - FREE ONLINE NOTE TAKING" />
+    <meta content="text/html; charset=UTF-8; X-Content-Type-Options=nosniff" http-equiv="Content-Type" />
+    <meta id="viewport" name=viewport content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="notes,online,cloud,free">
+    <meta name="author" content="Jeremy Yang">
+    <meta charset="UTF-8" />
+    <meta property="og:title" content="Not.IO" />
+    <meta property="og:type" content="note.app" />
+    <meta property="og:url" content="https://notio-sbojevets.c9users.io" />
+    <meta property="og:image" content="https://preview.c9users.io/sbojevets/notio/client/notiologo.png?_c9_id=livepreview0&_c9_host=https://ide.c9.io" />
+    <meta http-equiv="Cache-control" content="public">
+    <meta http-equiv="expires" content="Fri, 21 June 2050 14:25:27 GMT" />
+    <meta name="google-site-verification" content="z5mJLjVGtEe5qzCefW1pamxI7H46u19n4XnxEzgl1AU" />
+  <style>
+    * {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      -o-user-select: none;
+      user-select: none;
+    }
+    input {
+      -webkit-touch-callout: text;
+      -webkit-user-select: text;
+      -khtml-user-select: text;
+      -moz-user-select: text;
+      -ms-user-select: text;
+      -o-user-select: text;
+      user-select: text;
+    }
+    textarea {
+      -webkit-touch-callout: text;
+      -webkit-user-select: text;
+      -khtml-user-select: text;
+      -moz-user-select: text;
+      -ms-user-select: text;
+      -o-user-select: text;
+      user-select: text;
+    }
+    #previewont {
+      -webkit-touch-callout: text;
+      -webkit-user-select: text;
+      -khtml-user-select: text;
+      -moz-user-select: text;
+      -ms-user-select: text;
+      -o-user-select: text;
+      user-select: text;
+    }
+    #filec {
+      -webkit-touch-callout: text;
+      -webkit-user-select: text;
+      -khtml-user-select: text;
+      -moz-user-select: text;
+      -ms-user-select: text;
+      -o-user-select: text;
+      user-select: text;
+    }
+    #filetitle {
+      -webkit-touch-callout: text;
+      -webkit-user-select: text;
+      -khtml-user-select: text;
+      -moz-user-select: text;
+      -ms-user-select: text;
+      -o-user-select: text;
+      user-select: text;
+    }
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 5px;
+    }
+    #savebutton, #deletebutton, #renamebutton {
+      opacity:0.747;
+      border:none;
+    }
+    #savebutton:hover, #deletebutton:hover, #renamebutton:hover {
+      opacity:0.6;
+    }
+    #cleanbutton, #notebutton, #helpbutton {
+      opacity:0.15;
+    }
+    #cleanbutton:hover, #notebutton:hover, #helpbutton:hover {
+      opacity:0.4;
+    }
+    #previewbutton {
+      opacity:0.5;
+    }
+    #previewbutton:hover {
+      opacity:0.7;
+    }
+    #clickchange {
+      opacity:0.6;
+    }
+    #clickchange:hover {
+      opacity:1;
+    }
+    #sbutton {
+      opacity:0.2;
+    }
+    #sbutton:hover {
+      opacity:0.5;
+    }
+    #loginbutton {
+      opacity:0.5;
+    }
+    #loginbutton:hover {
+      opacity:1;
+    }
+    .btn {
+    	-moz-box-shadow:inset 0px 39px 0px -24px #e67a73;
+    	-webkit-box-shadow:inset 0px 39px 0px -24px #e67a73;
+    	box-shadow:inset 0px 39px 0px -24px #e67a73;
+    	background-color:#e4685d;
+    	-moz-border-radius:4px;
+    	-webkit-border-radius:4px;
+    	border-radius:4px;
+    	border:1px solid #ffffff;
+    	display:inline-block;
+    	cursor:pointer;
+    	color:#ffffff;
+    	font-family:Arial;
+    	font-size:16px;
+    	padding:6px 15px;
+    	text-decoration:none;
+    	text-shadow:0px 1px 0px #b23e35;
+    }
+    .btn2 {
+    	-moz-box-shadow:inset 0px 39px 0px -24px #3dc21b;
+    	-webkit-box-shadow:inset 0px 39px 0px -24px #3dc21b;
+    	box-shadow:inset 0px 39px 0px -24px #3dc21b;
+    	background-color:#3ed667;
+    	-moz-border-radius:4px;
+    	-webkit-border-radius:4px;
+    	border-radius:4px;
+    	border:1px solid #18ab29;
+    	display:inline-block;
+    	cursor:pointer;
+    	color:#ffffff;
+    	font-family:Arial;
+    	font-size:15px;
+    	padding:6px 15px;
+    	text-decoration:none;
+    	text-shadow:0px 1px 0px #2f6627;
+    }
+    .btn3 {
+    	-moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
+    	-webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
+    	box-shadow:inset 0px 1px 0px 0px #ffffff;
+    	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf));
+    	background:-moz-linear-gradient(top, #ededed 5%, #dfdfdf 100%);
+    	background:-webkit-linear-gradient(top, #ededed 5%, #dfdfdf 100%);
+    	background:-o-linear-gradient(top, #ededed 5%, #dfdfdf 100%);
+    	background:-ms-linear-gradient(top, #ededed 5%, #dfdfdf 100%);
+    	background:linear-gradient(to bottom, #ededed 5%, #dfdfdf 100%);
+    	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#dfdfdf',GradientType=0);
+    	background-color:#ededed;
+    	-moz-border-radius:6px;
+    	-webkit-border-radius:6px;
+    	border-radius:4px;
+    	border:1px solid #dcdcdc;
+    	display:inline-block;
+    	cursor:pointer;
+    	color:#777777;
+    	font-family:Arial;
+    	font-size:13px;
+    	font-weight:bold;
+    	padding:5px 15px;
+    	text-decoration:none;
+    	text-shadow:0px 1px 0px #ffffff;
+    }
+    
+    .filebutton {
+      text-align:right;
+      width:90%;
+      outline:none;
+    	background-color:#f9f9f9;
+    	border-radius:0px;
+    	border:1px solid #dcdcdc;
+    	box-shadow:none;
+    	display:inline-block;
+    	cursor:pointer;
+    	color:#666666;
+    	font-family:Arial;
+    	font-size:15px;
+    	font-weight:bold;
+    	padding:6px 24px;
+    	text-decoration:none;
+    	text-shadow:0px 1px 0px #ffffff;
+    }
+    .filebutton:hover {
+    	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #e9e9e9), color-stop(1, #f9f9f9));
+    	background:-moz-linear-gradient(top, #e9e9e9 5%, #f9f9f9 100%);
+    	background:-webkit-linear-gradient(top, #e9e9e9 5%, #f9f9f9 100%);
+    	background:-o-linear-gradient(top, #e9e9e9 5%, #f9f9f9 100%);
+    	background:-ms-linear-gradient(top, #e9e9e9 5%, #f9f9f9 100%);
+    	background:linear-gradient(to bottom, #e9e9e9 5%, #f9f9f9 100%);
+    	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#e9e9e9', endColorstr='#f9f9f9',GradientType=0);
+    	background-color:#e9e9e9;
+    }
+    
+    .foldbutton {
+      text-align:right;
+      width:90%;
+      outline:none;
+    	background-color:#ffe5b3;
+    	border-radius:0px;
+    	border:1px solid #dcdcdc;
+    	box-shadow:none;
+    	display:inline-block;
+    	cursor:pointer;
+    	color:#666666;
+    	font-family:Arial;
+    	font-size:15px;
+    	font-weight:bold;
+    	padding:6px 24px;
+    	text-decoration:none;
+    	text-shadow:0px 1px 0px #ffffff;
+    }
+    
+    .foldbutton:hover {
+      background-color:#ffeecc;
+    }
+    
+    .loginbutton {
+    	-moz-box-shadow:inset 0px 1px 1px 0px #91b8b3;
+    	-webkit-box-shadow:inset 0px 1px 1px 0px #91b8b3;
+    	box-shadow:inset 0px 1px 1px 0px #91b8b3;
+    	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #768d87), color-stop(1, #6c7c7c));
+    	background:-moz-linear-gradient(top, #768d87 5%, #6c7c7c 100%);
+    	background:-webkit-linear-gradient(top, #768d87 5%, #6c7c7c 100%);
+    	background:-o-linear-gradient(top, #768d87 5%, #6c7c7c 100%);
+    	background:-ms-linear-gradient(top, #768d87 5%, #6c7c7c 100%);
+    	background:linear-gradient(to bottom, #768d87 5%, #6c7c7c 100%);
+    	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#768d87', endColorstr='#6c7c7c',GradientType=0);
+    	background-color:#768d87;
+    	-moz-border-radius:7px;
+    	-webkit-border-radius:7px;
+    	border-radius:7px;
+    	border:1px solid #566963;
+    	display:inline-block;
+    	cursor:pointer;
+    	color:#ffffff;
+    	font-family:Arial;
+    	font-size:13px;
+    	font-weight:bold;
+    	padding:6px 23px;
+    	text-decoration:none;
+    	text-shadow:0px -1px 0px #2b665e;
+    }
+    .loginbutton:hover {
+    	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #6c7c7c), color-stop(1, #768d87));
+    	background:-moz-linear-gradient(top, #6c7c7c 5%, #768d87 100%);
+    	background:-webkit-linear-gradient(top, #6c7c7c 5%, #768d87 100%);
+    	background:-o-linear-gradient(top, #6c7c7c 5%, #768d87 100%);
+    	background:-ms-linear-gradient(top, #6c7c7c 5%, #768d87 100%);
+    	background:linear-gradient(to bottom, #6c7c7c 5%, #768d87 100%);
+    	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#6c7c7c', endColorstr='#768d87',GradientType=0);
+    	background-color:#6c7c7c;
+    }
+    .loginbutton:active {
+    	position:relative;
+    	top:1px;
+    }
+
+    .previewtoggle {
+      text-shadow:none;
+    	background-color:#bddbfa;
+    	border-radius:6px;
+    	border:1px solid #84bbf3;
+    	display:inline-block;
+    	cursor:pointer;
+    	color:#ffffff;
+    	font-family:Arial;
+    	font-size:15px;
+    	font-weight:bold;
+    	padding:6px 24px;
+    }
+
+    div::-webkit-scrollbar {
+        width: 8.5px;
+    }
+    
+    div::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
+        border-radius: 8px;
+    }
+    
+    div::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px #cccccc;
+    }
+    
+    iframe::-webkit-scrollbar {
+        width: 8px;
+        margin-bottom:5px;
+    }
+    
+    iframe::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        border-radius: 10px;
+        margin-bottom:5px;
+    }
+    
+    iframe::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+        margin-bottom:5px;
+    }
+    
+    .fontbuttons {
+      border: none;
+      margin-top:14.5vh;
+      border-bottom:z1px solid #f2f2f2;
+      background-color:#e6e6e6;
+    }
+    .editorcont {
+        border:none;
+        padding-left:6px;
+        padding-top:30px;
+        margin-left:188px;
+        margin-top:12vh;
+        border:none;
+        outline:0;
+        background-color:white;
+        word-wrap:break-word;
+        width:65vw;
+        height:51vh;
+    }
+  </style>
+</head>  
+<body style="margin:0px;">
+  <noscript>
+  <p style="background-color:white;padding:100px;font-family:sans-serif;font-size:20px;z-index:100;position:absolute;padding-bottom:80vh;">Javascript is disabled on your browser. For more information, copy and paste this link into your browser: http://www.alanwood.net/demos/enabling-javascript.html</p>
+  </noscript>
+<br>
+<br>
+<h1 class="login" style="margin-left:20px;font-family:sans-serif;letter-spacing:7.5px;font-size:30px">NOT.IO</h1>
+<input class="login" id="user" type="text" placeholder="Username" style="text-align:center;padding:2px;height:22px;width:130px;margin-left:20px;"></input>
+<div style="height:8px"></div>
+<input class="login" id="pass" onkeypress="loginenter(event)" type="password" placeholder="Password" style="text-align:center;padding:2px;hFeight:22px;width:130px;margin-left:20px;"></input>
+<div style="height:8px"></div>
+<div id="lbdiv" style="display:inline;position:fixed;margin-top:0px;margin-left:20px;">
+<input style="width:139px;" class="loginbutton" id="loginbutton" type="button" value="Log In" onclick="log()"></input>
+<div style="height:10px"></div>
+
+<p class="login" style="position:absolute;margin-bottom:30px;margin-left:22px;font-family:arial;font-size:12px;">Remember Me</p>
+<input class="login" type="checkbox" id="rembox" style="margin-top:12px"></input>
+</div>
+
+
+<div class="menuitems">
+<img alt="Settings" onclick="displaySettings()" id='sbutton' style="position:absolute;width:28px;height:28px;padding-top:1em;margin-top:-63px;margin-left:130px" src="settings.png"></img>
+<!--<img onclick="" id='helpbutton' style="position:absolute;width:25px;height:25px;padding-top:1em;margin-top:12vh;margin-left:95.7vw" src="settings.png"></img>!-->
+</div>
+
+<div class="settings">
+<input type="button" value="Change Password" id="clickchange" onclick="changePassword()" style="font-color:white;border:none;position:absolute;width:150px;height:20px;margin-top:-42.5px;margin-left:170px;border-radius:2px;outline:none"></input>
+</div>
+</div>
+
+<p id="stat" style="margin-top:75px;position:absolute;font-size:12px;font-family:arial;display:inline;margin-left:20px"></p>
+<input maxlength="16" placeholder="rename file" id="renameinput" onkeypress="checkrename(event)" type="text" class='renameinput' style="z-index:21;position:fixed;border-radius:3px;height:26.5px;margin-left:413px;margin-top:3.18vh;background-color:white;padding:2px;outline:0;border-top:none;border-left:none"></input>
+
+<div id="content" class="menuitems">
+  <p id="username" style="position:absolute;width:28px;height:28px;padding-top:1em;margin-top:-59px;margin-left:165px;font-family:arial;font-size:18px;color:black;font-weight:light"></p>
+  <div style="position:absolute;padding-right:1em;z-index:20;margin-top:12.5vh;margin-left:190px;border-left:0;border-right:0;border-bottom:0;border-top:0px solid;width:325px;border-color:gray;"></div>
+  <div height="9px"></div>
+  <img alt="Save" id="savebutton" src="save.png" class="btn2" onclick="saveFile()" style="outline:0;position:absolute;margin-top:3vh;margin-left:190px;width:20px;height:20px;"</img>
+  <img alt="Delete" id="deletebutton" src="delete.png" class="btn" onclick="deleteFile()" style="outline:0;position:absolute;margin-top:3.02vh;margin-left:275px;width:20px;height:20px;"></img>
+  <img alt="Rename" id="renamebutton" src="rename.png" class="btn3" onclick="showRename()" style="outline:0;position:absolute;margin-top:3.1vh;margin-left:360px;width:22px;height:21.8px"</img>
+  
+  <div style="z-index:30;position:absolute;margin-top:3.15vh;overflow-y:auto;max-width:150px;width:150px;max-height:412px;min-height:95px;overflow-x:auto;background-color:#fcfcfc;border-left:0;border-top:0;border-bottom:1px solid;border-right:1px solid;border-color:#cccccc">
+  <img id="notebutton" onclick="newFile()" src="newnote.png" style="position:absolute;margin-top:12px;margin-left:10px;width:29px;height:32px;z-index:29"></img>
+  <p onclick="newFile()" style="border:none;outline:0;position:absolute;margin-top:20px;margin-left:42px;max-width:52%;width:52%;height:28px;font-family:sans-serif;font-size:15px;padding:1px;background-color:transparent;color:grey;font-style:italic">add new</p>
+  <select name="tagselect" id="tagselect" class="tagselect" type="text" placeholder="#" style="margin-top:60px;width:90%;border-right:0;border-left:0;border-top:1px solid grey;border-bottom:1px solid grey;outline:none;padding-left:5px;font-family:sans-serif;font-size:14px">
+  </select>
+  <p style="margin-top:20px;font-family:sans-serif;" id="directory"></p>
+  </div>
+  
+  <div spellcheck="false" id="totcont" style="z-index:-20;position:absolute;margin-top:3vh;border-style:ridge;border-color:#cccccc;border-width:1px;width:99%;height:80vh;border-right:0px;background-color:#f2f2f2">
+  <div style="height:15px"></div>
+  <p id="filetitle" style="position:absolute;margin-top:6vh;font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;font-size:30px;margin-left:187px;"></p>
+  <div style="height:15px"></div>
+  <input class="taglist" id="taglist" onkeypress="tagenter(event)" type="text" placeholder="#tags" style="font-size:16px;background-color:transparent;outline:none;border:none;width:150px;height:20px;position:absolute;margin-top:9.7vh;margin-left:188px"></input>
+  <button onclick="bold()" class="fontbuttons" id="boldbutton" style="font-family:sans-serif;font-size:17px;outline:none;width:30px;height:23px;position:absolute;margin-left:188px;padding:6px;padding-top:2px;border-radius:0px;"><b>b</b></button>
+  <button onclick="italic()" class="fontbuttons" id="italicbutton" style="font-family:sans-serif;font-size:17px;outline:none;width:30px;height:23px;position:absolute;margin-left:223px;padding:6px;padding-top:2px;border-radius:0px;"><i>i</i></button>
+  <button onclick="underline()" class="fontbuttons" id="underbutton" style="font-family:sans-serif;font-size:17px;outline:none;width:30px;height:23px;position:absolute;margin-left:258px;padding:6px;padding-top:2px;border-radius:0px;"><u>u</u></button>
+  <button onclick="strike()" class="fontbuttons" id="strikebutton" style="font-family:sans-serif;font-size:17px;outline:none;width:60px;height:23px;position:absolute;margin-left:293px;padding:6px;padding-top:2px;border-radius:0px;"><s>strike</s></button>
+  <button onclick="number()" class="fontbuttons" id="numberbutton" style="font-family:sans-serif;font-size:17px;outline:none;width:30px;height:23px;position:absolute;margin-left:356px;padding:6px;padding-top:2px;border-radius:0px;">#</button>
+  <button onclick="bullet()" class="fontbuttons" id="bulletbutton" style="font-family:sans-serif;font-size:17px;outline:none;width:30px;height:23px;position:absolute;margin-left:390px;padding:6px;padding-top:2px;border-radius:0px;">•</button>
+  <button onclick="link()" class="fontbuttons" id="linkbutton" style="font-family:verdana;font-size:16px;outline:none;width:30px;height:23px;position:absolute;margin-left:424px;padding-top:0px;border-radius:0px;">➜</button>
+  <img src="image.png" onclick="image()" class="fontbuttons" id="imagebutton" style="outline:none;width:22px;height:15px;position:absolute;margin-left:458px;padding-top:4px;padding-bottom:4px;padding-right:6.5px;padding-left:6.5px;border-radius:0px;">image</img>
+  <br>
+  <div style="height:1.225vh"></div>
+  <div id="filec" class="filecontents" style=""></div>
+  </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="./sweetalert/dist/sweetalert.min.js"></script>
+<link rel="icon" href="pencilicon.png" type="image/x-icon"/>
+<link rel="stylesheet" type="text/css" href="./sweetalert/dist/sweetalert.css">
+
+<script>
+  if (location.protocol == 'http:') {
+    location.href = location.href.replace(/^http:/, 'https:')
+  }
+</script>
+
+<script>
+  if (screen.width <= 240) {
+    document.getElementById("viewport").setAttribute("content", "width=device-width; initial-scale=0.8");
+  }
+  $(".menuitems").toggle();
+  $(".settings").toggle();
+  $(".renameinput").toggle();
+  window.onresize = function() {
+    document.getElementById("editcont").style.width = $(window).width() * 0.9 - 188 + "px";
+    document.getElementById("editcont").style.height = $(window).height() * 51 - $('#totcont').css('margin-top');
+  };
+</script>
+
+<script type="text/template" id="editorStyles">
+  html {
+    height: 100%;
+  }
+  body {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    height: 95%;
+    
+    background: transparent;
+    color: #2b2b2b;
+    font: 15px/1.35 Helvetica, arial, sans-serif;
+    cursor: text;
+    overflow:auto;
+  }
+  a {
+    text-decoration: underline;
+  }
+  h1 {
+    font-size: 138.5%;
+  }
+  h2 {
+    font-size: 123.1%;
+  }
+  h3 {
+    font-size: 108%;
+  }
+  h1,h2,h3,p {
+    margin: 1em 0;
+  }
+  h4,h5,h6 {
+    margin: 0;
+  }
+  ul, ol {
+    margin: 0 1em;
+    padding: 0 1em;
+  }
+  blockquote {
+    border-left: 2px solid blue;
+    margin: 0;
+    padding: 0 10px;
+  }
+</script>
+<script type="text/javascript" src="build/squire-raw.js"></script>
+<script type="text/javascript" charset="utf-8">
+
+//squire api
+  var editor;
+  var iframe = document.createElement( 'iframe' );
+  iframe.addEventListener( 'load', function () {
+    // Standards mode check
+    var doc = iframe.contentDocument;
+    if ( doc.compatMode !== 'CSS1Compat' ) {
+        doc.open();
+        doc.write( '<!DOCTYPE html><title></title>' );
+        doc.close();
+    }
+    if ( editor ) {
+        return;
+    }
+    // create squire
+    editor = new Squire( doc, {
+        blockTag: 'p',
+        blockAttributes: {'class': 'paragraph'},
+        tagAttributes: {
+            ul: {'class': 'UL'},
+            ol: {'class': 'OL'},
+            li: {'class': 'listItem'}
+        }
+    });
+    //CUSTOM COMMANDS
+    //capture ctrl
+    editor.addEventListener("keydown", function(event) {
+      //capture ctrl
+      if (event.ctrlKey) {
+        //s
+        if (event.keyCode == 83) {
+          event.preventDefault();
+          saveFile();
+        }
+        //p
+        if (event.keyCode == 80) {
+          event.preventDefault();
+          printFile();
+        }
+        //k
+        if (event.keyCode == 75) {
+          link();
+        }
+      }
+      checkformat();
+    });
+    
+    editor.addEventListener("click", function() {
+      if ($(".renameinput").is(":visible")) {
+        revertname();
+      }
+      checkformat();
+    });
+    // Add styles to frame
+    var style = doc.createElement( 'style' );
+    style.type = 'text/css';
+    style.textContent = document.getElementById( 'editorStyles' ).textContent;
+    doc.querySelector( 'head' ).appendChild( style );
+  }, false );
+  iframe.setAttribute("class", "editorcont");
+  iframe.setAttribute("id", "editcont");
+  document.getElementById("filec").appendChild( iframe );
+  document.addEventListener( 'click', function ( e ) {
+    var id = e.target.id,
+        value;
+    if ( id && editor && editor[ id ] ) {
+      if ( e.target.className === 'prompt' ) {
+        value = prompt( 'Value:' );
+      }
+      editor[ id ]( value );
+    }
+  }, false );
+
+function checkformat() {
+  if (editor.hasFormat("b")) {
+    document.getElementById("boldbutton").style.backgroundColor = "#cccccc";
+  }
+  else {
+    document.getElementById("boldbutton").style.backgroundColor = "#e6e6e6";
+  }
+  if (editor.hasFormat("i")) {
+    document.getElementById("italicbutton").style.backgroundColor = "#cccccc";
+  }
+  else {
+    document.getElementById("italicbutton").style.backgroundColor = "#e6e6e6";
+  }
+  if (editor.hasFormat("u")) {
+    document.getElementById("underbutton").style.backgroundColor = "#cccccc";
+  }
+  else {
+    document.getElementById("underbutton").style.backgroundColor = "#e6e6e6";
+  }
+  if (editor.hasFormat("s")) {
+    document.getElementById("strikebutton").style.backgroundColor = "#cccccc";
+  }
+  else {
+    document.getElementById("strikebutton").style.backgroundColor = "#e6e6e6";
+  }
+  if (editor.hasFormat("ul")) {
+    document.getElementById("bulletbutton").style.backgroundColor = "#cccccc";
+  }
+  else {
+    document.getElementById("bulletbutton").style.backgroundColor = "#e6e6e6";
+  }
+  if (editor.hasFormat("ol")) {
+    document.getElementById("numberbutton").style.backgroundColor = "#cccccc";
+  }
+  else {
+    document.getElementById("numberbutton").style.backgroundColor = "#e6e6e6";
+  }
+  if (editor.hasFormat("a")) {
+    document.getElementById("linkbutton").style.backgroundColor = "#cccccc";
+  }
+  else {
+    document.getElementById("linkbutton").style.backgroundColor = "#e6e6e6";
+  }
+}
+
+//TEXT CONTROLS
+function bold() {
+  if (editor.hasFormat('b')) {
+    editor.removeBold();
+  }
+  else {
+    editor.bold();
+  }
+  checkformat();
+}
+function italic() {
+  if (editor.hasFormat('i')) {
+    editor.removeItalic();
+  }
+  else {
+    editor.italic();
+  }
+  checkformat();
+}
+
+function underline() {
+  if (editor.hasFormat('u')) {
+    editor.removeUnderline();
+  }
+  else {
+    editor.underline();
+  }
+  checkformat();
+}
+
+function strike() { //through
+  if (editor.hasFormat('s')) {
+    editor.removeStrikethrough();
+  }
+  else {
+    editor.strikethrough();
+  }
+  checkformat();
+}
+
+function number() {
+  if (editor.hasFormat('ol')) {
+    editor.removeList();
+  }
+  else {
+    editor.makeOrderedList();
+  }
+  checkformat();
+}
+
+function bullet() {
+  if (editor.hasFormat('ul')) {
+    editor.removeList();
+  }
+  else {
+    editor.makeUnorderedList();
+  }
+  checkformat();
+}
+
+function link() {
+  swal({   
+    title: "Edit Link",   
+    text: "Put your link in the box. Leave it empty to delete the link.",   
+    type: "input",   
+    showCancelButton: true,   
+    allowOutsideCLick: true,
+    allowEscapeKey: true,
+    closeOnConfirm: false,   animation: "slide-from-top",   
+    inputPlaceholder: "image link" },
+    function (inputValue) {
+      if (inputValue === false) return false;
+      if (/\S/.test(inputValue)) {
+        if (inputValue.toLowerCase().includes("http://") || inputValue.toLowerCase().includes("https://")) {
+          editor.makeLink(inputValue, { ondblclick: "window.open('" + inputValue + "', '_blank');"});
+        }
+        else {
+          editor.makeLink('http://' + inputValue, { ondblclick: "window.open('http://" + inputValue + "', '_blank');"});
+        }
+        swal("", "Link created.", "success"); 
+      }
+      else {
+        editor.removeLink();
+        swal("", "Link deleted.", "error"); 
+      }
+    });
+  checkformat();
+}
+
+function image() {
+  swal({   
+    title: "Insert Image",   
+    text: "Put in the link to your image.",   
+    type: "input",   
+    showCancelButton: true,  
+    allowOutsideCLick: true,
+    allowEscapeKey: true,
+    closeOnConfirm: false,   animation: "slide-from-top",   
+    inputPlaceholder: "link" },
+    function (inputValue) {
+      if (inputValue === false) return false;
+      if (!(/\S/.test(inputValue))) {  
+        swal({   
+          title: "Aw, snap!",   
+          text: "Invalid image URL.",
+          allowOutsideClick: true,
+          type: "error",
+          timer: 1500,   
+          showConfirmButton: false 
+        });
+      }
+      else {
+        if (inputValue.toLowerCase().includes("http://") || inputValue.toLowerCase().includes("https://")) {
+          editor.insertImage(inputValue);
+        }
+        else {
+          editor.insertImage("http://" + inputValue);
+        }
+        swal({
+          title: "Great!",   
+          text: "Your image was added.",
+          allowOutsideClick: true,
+          type: "success",
+          timer: 1500,   
+          showConfirmButton: false 
+        });
+      }
+    });
+}
+
+function printFile() {
+  var childWindow = window.open('','childWindow','location=yes, menubar=yes, toolbar=yes');
+  childWindow.document.open();
+  childWindow.document.write('<html><head></head><body>');
+  childWindow.document.write("<h1 style='font-family:arial'>" + document.getElementById('filetitle').innerHTML + "</h1><div style='height:12px'>");
+  childWindow.document.write("<p style='font-family:sans-serif;font-size:13.5px'>" + editor.getHTML() + "</p>");
+  childWindow.document.write('</body></html>');
+  childWindow.print();
+  childWindow.document.close();
+  childWindow.close();
+}
+
+
+var socket = io.connect('/', { 
+  forceNew:true, 
+  'multiplex':false, 
+  secure:true,
+});
+var logged = false;
+var user = document.getElementById("user").value;
+var pass = document.getElementById("pass").value;
+var eleclicked = "";
+var opfile = false;
+var selected = "";
+var delsure = false;
+var newname = "";
+var reset;
+var filelist = [];
+var filetypes = [];
+var nofold = 0; //number of folders
+var first = true;
+var rbutton = document.getElementById("renamebutton");
+var reinput = document.getElementById("renameinput");
+var title = document.getElementById("filetitle");
+var tempname = "";
+var midp = false;
+var sdisplay = false;
+var tags = [];
+var eachtag = [];
+var saving = false;
+var temptags = "";
+var filelist = [];
+var filtering = "";
+
+socket.on('newstat', function(d, t) {
+  clearTimeout(reset);
+  document.getElementById("stat").innerHTML = d;
+  if (t === undefined) {
+    reset = setTimeout(function() {
+      if (document.getElementById("stat").innerHTML !== "") {
+        document.getElementById("stat").innerHTML = "";
+      }
+    }, 500);
+  }
+  else if (t == "mid") {
+    
+  }
+  if (d == "Incorrect password.") {
+    setTimeout(function() {
+    swal({   
+      title: "Aw, snap!",   
+      text: "Your password was incorrect.",   
+      timer: 1500,
+      type: "error",
+      showConfirmButton: false
+    });
+    }, 550);
+  }
+  if (d == "Password changed.") {
+    setTimeout(function() {
+    swal({   
+      title: "Success",   
+      text: "Your password was changed.",   
+      timer: 1500,
+      type: "success",
+      showConfirmButton: false
+    });
+    }, 550);
+  }
+  if (d == "File renamed.") {
+    setTimeout(function() {
+    swal({   
+      title: "Great!",   
+      text: "Your note was renamed.",   
+      timer: 1300,
+      type: "success",
+      showConfirmButton: false
+    });
+    }, 550);
+  }
+});
+
+
+socket.on('success', function() {
+  $(".menuitems").fadeToggle("slow", function() {});
+  $(".login").toggle();
+  if (document.getElementById("rembox").checked == true) {
+    document.cookie = "user=" + user;
+    document.cookie = "pass=" + pass;
+  }
+  else {
+    document.cookie = "user:''";
+    document.cookie = "pass:''";
+  }
+  document.getElementById("stat").style.marginLeft = "10px";
+  document.getElementById("stat").style.marginTop = "-10px";
+  document.getElementById("user").value = "";
+  document.getElementById("pass").value = "";
+  logged = true;
+  document.getElementById("loginbutton").value = "Log Out";
+  document.getElementById("lbdiv").style.marginLeft = "-20px";
+  document.getElementById("lbdiv").style.marginTop = "-71px";
+  document.getElementById("lbdiv").style.paddingTop = "1em";
+  document.getElementById("lbdiv").style.opacity = 0.3;
+  socket.emit('checkdir', false);
+});
+
+socket.on('select', function(f) {
+  selected = f;
+  retitle();
+  socket.emit('checkdir', false);
+});
+
+socket.on('clear', function() {
+});
+  
+socket.on('returndir', function(f, ftags, spectags, recent, types, no) {
+  if (f[0] === undefined) {
+    document.getElementById("directory").innerHTML = "<p style='margin-left:8px;font-size:12.5px;'>...</p>";
+    selected = "";
+    retitle();
+  }
+  else {
+    tags = ftags;
+    eachtag = spectags;
+    filelist = f;
+    filetypes = types;
+    nofold = no;
+    var tempdir;
+    if (first) {
+      if ($.trim(recent) !== '') { //if not empty
+        selected = recent;
+        retitle();
+        socket.emit('openfile', recent);
+        editor.focus();
+        editor.moveCursorToStart();
+        first = false;
+      }
+    }
+    if (filtering == "" || filtering == "All Tags") { 
+      tempdir = "";
+      for (var i = 0; i < f.length; i++) {
+        tempdir += "<input style='margin-left:0px;padding:5px' class='" + types[i] + "' type='button' value='" + f[i] + "' onclick='openFile()'></input><div style='height:10px'></div>";
+      }
+      document.getElementById("directory").innerHTML = tempdir;
+    }
+    else {
+      filterTag(filtering);
+    }
+    $('#tagselect').empty();
+    $('#tagselect')
+         .append($("<option></option>")
+         .attr("value","All Tags")
+         .text("All Tags"));
+    for (var j = 0; j < tags.length; j++) {
+      $('#tagselect')
+         .append($("<option></option>")
+         .attr("value",j)
+         .text(tags[j]));
+    }
+    if (filtering !== "All Tags" && filtering !== "") { 
+      //Select correct tag after refreshing directory/taglist
+      var ttags = [];
+      $("#tagselect > option").each(function() {
+        ttags.push(this.text);
+      });
+      $('#tagselect').val(ttags.indexOf(filtering) - 1);
+    }
+  }
+});
+
+function backToMain() {
+  socket.emit('checkdir', false);
+}
+
+$('#tagselect').on('change', function() {
+  var what = $(this).find("option:selected").text();
+  filterTag(what);
+});
+
+function filterTag(what) {
+  //what = tag to filter by
+  $('#directory').empty();
+  var tempdir = "";
+  var tagged;
+  if (what !== "All Tags") {
+    filtering = what;
+    for (var i = nofold; i < filelist.length; i++) {
+      tagged = false;
+      if (eachtag[i - nofold] !== undefined) {
+        console.log(filelist[i]);
+        console.log(eachtag[i - nofold]);
+        for (var j = 0; j < eachtag[i - nofold].length; j++) {
+          if (eachtag[i - nofold][j] == what) {
+            tagged = true;
+          }
+        }
+        if (tagged) {
+          tempdir += "<input style='margin-left:0px;padding:5px' class='filebutton' type='button' value='" + filelist[i] + "' onclick='openFile()'></input><div style='height:10px'></div>";
+        }
+      }
+    }
+  }
+  else {
+    filtering = "";
+    for (var i = 0; i < filelist.length; i++) {
+      tempdir += "<input style='margin-left:0px;padding:5px' class='" + filetypes[i] + "' type='button' value='" + filelist[i] + "' onclick='openFile()'></input><div style='height:10px'></div>";
+    }
+  }
+  document.getElementById("directory").innerHTML = tempdir;
+}
+
+socket.on('paste', function(c, r, ftags, state) {
+    editor.setHTML(c);
+    editor.getDocument().body.scrollTop = state;
+    temptags = "";
+    for (var i = 0; i < ftags.length; i++) {
+      if (/\S/.test(ftags[i])) {
+        temptags += "#" + ftags[i] + " ";
+      }
+    }
+    document.getElementById("taglist").value = temptags;
+});
+
+socket.on('pastetag', function(ftags) {
+    temptags = "";
+    for (var i = 0; i < ftags.length; i++) {
+      if (/\S/.test(ftags[i])) {
+        temptags += "#" + ftags[i] + " ";
+      }
+    }
+    document.getElementById("taglist").value = temptags;
+});
+
+socket.on('isnew', function() {
+  selected = "welcome";
+  retitle();
+  socket.emit('checkdir', false);
+  socket.emit('openfile', 'welcome.txt');
+});
+
+socket.on('succesfulnew', function() {
+  if (selected != "") {
+    socket.emit('savefile', selected, editor.getHTML(), false, "", editor.getDocument().body.scrollTop);
+  }
+  setTimeout(function() {
+    socket.emit('openfile', newname);
+    editor.setHTML("");
+    checkformat();
+  }, 50);
+});
+
+socket.on('opennew', function(f) {
+  socket.emit('openfile', f);
+});
+
+socket.on('passchanged', function() {
+  $(".settings").toggle();
+});
+
+function openFile() {
+  opfile = true;
+}
+
+function saveFile() {
+  if (selected !== "" && !saving) {
+      saving = true;
+      socket.emit('savefile', selected, editor.getHTML(), false, "", editor.getDocument().body.scrollTop);
+  }
+}
+
+socket.on('donesave', function() {
+  saving = false;
+});
+
+function deleteFile() {
+  if (selected !== "") {
+      swal({   
+      title: "Are you Sure?",   
+      text: "You are about to delete this file. It cannot be recovered.",   
+      type: "warning",   
+      showCancelButton: true,   
+      allowOutsideCLick: true,
+      allowEscapeKey: true,
+      closeOnConfirm: false,   animation: "slide-from-top",   
+      inputPlaceholder: "link" },
+      function (isConfirm) {
+        if (isConfirm) {
+          swal({   
+            title: "Buh bye.",   
+            text: "Your note was deleted.",
+            allowOutsideClick: true,
+            type: "success",
+            timer: 1500,   
+            showConfirmButton: false 
+          });
+          socket.emit('deletefile', selected);
+          selected = "";
+          retitle();
+          editor.setHTML("");
+          document.getElementById("taglist").value = "";
+          if (filelist[0] === undefined) {
+            document.getElementById("directory").innerHTML = "<p style='margin-left:8px;font-size:12.5px;'>No files to display.</p>";
+          }
+        }
+      });
+  }
+}
+
+socket.on('donedelete', function() {
+  socket.emit('checkdir', false);
+});
+
+function loginenter(event) {
+  var x = event.charCode;
+  if (x == 13) {
+    log();
+  }
+}
+
+function tagenter(event){
+  var x = event.charCode;
+  var utags = document.getElementById("taglist");
+  var tagtext;
+  var tagarray;
+  var hash = new RegExp("#");
+  var hashin = hash.test(utags.value);
+  if (x == 13 && hashin) {
+    tagtext = utags.value.replace(/ +?/g, "");
+    tagtext = tagtext.replace(/,/g, "");
+    tagarray = tagtext.split("#");
+    for (var i = 0; i < tagarray.length; i++) {
+      if (tagarray[i] == "") {
+        tagarray.splice(i, 1);
+      }
+    }
+    socket.emit('tagup', tagarray, selected);
+  }
+  else if (x == 13 && $.trim( $('#taglist').val() ) == '') {
+    socket.emit('tagup', [], selected);
+  }
+  else if (x == 13 && utags.value.trim().length == 0) {
+    document.getElementById("taglist").value = "";
+  }
+}
+
+socket.on('donetag', function() {
+  socket.emit('checkdir', false);
+});
+
+function newFile() {
+    swal({   
+      title: "Create Note",   
+      text: "What do you want to call it?",   
+      type: "prompt",   
+      showCancelButton: true,   
+      allowOutsideCLick: true,
+      allowEscapeKey: true,
+      closeOnConfirm: true,   animation: "slide-from-top",   
+      inputPlaceholder: "name " },
+      function (inputValue) {
+        if (!inputValue) return false;
+          socket.emit('newfile', inputValue, filtering);
+          socket.emit('checkdir', false);
+          newname = inputValue;
+        });
+}
+
+function checknewname(event) {
+  var x = event.charCode;
+  if (x == 13) {
+    newFile();
+  }
+}
+
+function renameFile() {
+  socket.emit('renamefile', selected, reinput.value);
+  revertname();
+  setTimeout(function() {
+    socket.emit('checkdir', false);
+  }, 50);
+}
+
+function checkrename() {
+  var x = event.charCode;
+  if (x == 13) {
+    renameFile();
+  }
+}
+
+function showRename() {
+  rbutton.src = "check.png";
+  reinput.placeholder = selected;
+  $(".renameinput").toggle();
+  $("#renameinput").focus();
+  $("#renameinput").val("");
+  rbutton.setAttribute('onclick','renameFile()');
+}
+
+function revertname() {
+  rbutton.src = "rename.png";
+  $(".renameinput").toggle();
+  rbutton.setAttribute('onclick','showRename()');
+}
+
+function log() {
+  if (!logged) {
+    login();
+  }
+  if (logged) {
+    logout();
+  }
+}
+function login() {
+  user = document.getElementById("user").value;
+  pass = document.getElementById("pass").value;
+  socket.emit('login', user, pass);
+}
+
+socket.on('cachelog', function(u, p) {
+  socket.emit('login', u, p);
+});
+
+function logout() {
+  socket.emit('logout');
+  document.cookie = "user=''";
+  document.cookie = "pass=''";
+}
+
+socket.on('refresh', function() {
+  window.location.href = window.location.href;
+});
+
+function displaySettings() {
+  if (!sdisplay) {
+    sdisplay = true;
+    $(".settings").toggle();
+  }
+  else if (sdisplay) {
+    sdisplay = false;
+    $(".settings").toggle();
+  }
+}
+
+function changePassword() {
+  swal({   
+    title: "Change Password",   
+    text: "For security reasons, first enter your old password.",   
+    type: "input",   
+    showCancelButton: true,   
+    allowOutsideCLick: true,
+    allowEscapeKey: true,
+    closeOnConfirm: true,   animation: "slide-from-top",   
+    inputPlaceholder: "password" },
+    function (inputValue) {
+      if (inputValue === false) return false;
+        confirmPassword(inputValue); 
+    });
+}
+
+function confirmPassword(old) {
+  setTimeout(function() {
+  swal({   
+    title: "Change Password",   
+    text: "Now, enter your new password.",   
+    type: "input",   
+    showCancelButton: true,   
+    allowOutsideCLick: true,
+    allowEscapeKey: true,
+    closeOnConfirm: true,   animation: "slide-from-top",   
+    inputPlaceholder: "password" },
+    function (inputValue) {
+      if (inputValue === false) return false;
+      socket.emit('changepass', old, inputValue);
+      if ($(".settingst").is(":visible")) {
+        $(".settings").toggle();
+      }
+    });
+  }, 550);
+}
+
+function retitle() {
+  title.innerHTML = selected;
+}
+
+document.addEventListener('click', function(e) {
+    e = e || window.event;
+    var target = e.target || e.srcElement,
+        text = target.value;
+    eleclicked = text;
+    if (opfile) {
+      opfile = false;
+      if (selected !== "" && !midp && text !== selected) {
+        if (!midp) {
+          midp = true;
+          tempname = eleclicked;
+          if (target.className == "filebutton") {
+            socket.emit('savefile', selected, editor.getHTML(), true, tempname, editor.getDocument().body.scrollTop);
+          }
+          else if (target.className == "foldbutton") {
+            socket.emit('checkdir', true, eleclicked, selected);
+          }
+        }
+      }
+      if (selected == "") {
+        if (target.className == "filebutton") {
+          socket.emit('openfile', eleclicked, selected);
+          selected = eleclicked;
+          retitle();
+        }
+        else if (target.className  == "foldbutton") {
+          socket.emit('checkdir', true, eleclicked, selected);
+        }
+      }
+    }
+    if (target.className !== "renameinput" && target.className !== "btn3") {
+      if ($(".renameinput").is(":visible")) {
+        revertname();
+      }
+    }
+}, false);
+
+window.onbeforeunload = function (e) {
+  if (logged) {
+    socket.emit('savefile', selected, editor.getHTML(), false, "", editor.getDocument().body.scrollTop);
+    e = e || window.event;
+  }
+};
+
+socket.on('doneauto', function(s) {
+  socket.emit('openfile', s);
+  editor.focus();
+  selected = s;
+  retitle();
+  setTimeout(function() {
+    midp = false;
+  }, 100);
+});
+
+socket.on('donenavi', function() {
+  setTimeout(function() {
+    midp = false;
+  }, 100);
+});
+
+
+document.getElementById("editcont").style.width = $(window).width() * 0.9 - 188 + "px";
+</script>
+
+</body>

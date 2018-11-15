@@ -1,0 +1,683 @@
+
+process.env.NODE_ENV = 'production';
+//var tls = require('tls');
+
+//modules
+var http = require('http');
+http.globalAgent.maxSockets = Infinity;
+var path = require('path');
+var socketio = require('socket.io');
+var express = require('express');
+var helmet = require('helmet');
+var esession = require('express-session');
+var router = express();
+router.use(helmet());
+
+/*
+router.use(esession({
+  secret: 'My secretively secret secret!597231',
+  cookie: {
+    httpOnly: true,
+    secure: true,
+  },
+  proxy: true,
+  resave: false,
+  saveUninitialized: false
+}));
+*/
+
+var blackwall = require("blackwall");
+var firewall = new blackwall();
+var policy = firewall.policy('policy_name', [firewall.rules.rateLimiter], {
+    rate: {
+        m: 20
+    }
+});
+router.use(firewall.enforce("express", policy));
+var sqlinjection = require('sql-injection');
+router.use(sqlinjection);
+const key = "randomstuff901263476";
+var encryptor = require('simple-encryptor')(key);
+var server = http.createServer(router);
+//perf
+var compression = require('compression');
+var minify = require('express-minify');
+router.use(compression());
+router.use(express.compress({filter: function (req, res) { return true;}}));
+router.use(minify());
+
+var io = socketio.listen(server);
+var fs = require('fs');
+var mkdirp = require('mkdirp');
+var createFile = require('create-file');
+//manipulation
+var file = require("file");
+
+var Ddos = require('ddos');
+var ddos = new Ddos;
+var bodyParser = require('body-parser');
+var sanitizer = require('sanitizer');
+var inArray = require('in-array');
+var cleanArray = require('clean-array');
+
+var toobusy = require('toobusy-js');
+router.use(function(req, res, next) {
+  if (toobusy()) {
+    res.send(503, "Sorry, our website is too busy!\nIt should catch its breath in a bit, so check back later.");
+  } else {
+    next();
+  } 
+});
+
+//environment
+var socks = [];
+var users = [];
+var userloc = [];
+var wselect = [];
+var session;
+var udir = [];
+var ureq = [];
+var filecontents;
+var bwords = /(<script|\/script>|<iframe|\/iframe>|<frame|\/frame>|onerror)/gi;
+var badstuff = /[^a-zA-Z0-9 ]/g;
+///(#|%|&|{|}|\|\/|<|>|\*|\?|$|!|'|"|:|@|\+|`|~|\||\=|)/gi
+var dcing = false;
+
+//DATABASE
+var locallydb = require('locallydb');
+var db = new locallydb('./userdb');
+var userinfo = db.collection('userinfo');
+
+//server-server communications
+/* To be continued
+const net = require("net");
+var nserver = net.Server();
+nserver.listen({
+  host: "0.0.0.0",
+  port: 4157,
+  exclusive: true
+});
+*/
+
+
+var maxfile = 500000000; //max string size
+
+//cookie stuff
+var uc = {};
+var pc = [];
+var userc = [];
+var passc = [];
+var tempc = [];
+var tpass = "";
+var tuser = "";
+
+router.use(ddos.express);
+router.use(express.bodyParser({limit: '50mb'}));
+var cachetime = 86400000*7;
+router.use(express.static(path.resolve(__dirname, 'client'), { maxAge: cachetime }));
+
+//io config
+io.configure('production', function () {
+  io.enable('browser client minification', true);
+  io.enable('browser client etag', true);
+  io.enable('browser client gzip', true);
+  io.set('log level', 1);
+  io.set('transports', ['websocket', 'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling']);
+});
+
+var attempts = [];
+
+io.on('connection', function(socket) {
+  ureq.push(0);
+  socks.push(socket.id);
+  users.push("notlogged");
+  userloc.push("notlogged");
+  wselect.push("");
+  attempts.push(0);
+  udir.push([]);
+  socket.join("notlogged");
+  requestMade(socket.id);
+  cleanArray(ureq);
+  cleanArray(socks);
+  cleanArray(users);
+  cleanArray(userloc);
+  cleanArray(wselect);
+  cleanArray(attempts);
+  cleanArray(udir);
+  console.log("ID " + socket.id + " connected.");
+  
+  //cookies
+  uc = {};
+  pc = [];
+  userc = [];
+  passc = [];
+  tempc = [];
+  tpass = "";
+  tuser = "";
+  uc = socket.handshake.headers;
+  if (uc.cookie !== undefined) {
+    pc = uc.cookie.split(";");
+    for (var i = 0; i < pc.length; i++) {
+      tempc = pc[i].split('=');
+      for (var j = 0; j < tempc.length; j++) {
+        tempc[j] = tempc[j].replace(/ +?/g, '');
+      }
+      if (tempc[0] == "user") {
+          tuser = tempc[1];
+      }
+      if (tempc[0] == "pass") {
+          tpass = tempc[1];
+      }
+    }
+    tuser = tuser.replace(/''/g, "");
+    tpass = tpass.replace(/''/g, "");
+    if (tpass !== "" && tuser !== "") {
+      socket.emit('cachelog', tuser, tpass);
+    }
+  }
+  
+  //disconnect
+  socket.on('disconnect', function() {
+    requestMade(this.id);
+    session = socks.indexOf(this.id);
+    console.log("ID " + socks[session] + " disconnected.");
+    socks.splice(session);
+    users.splice(session);
+    userloc.splice(session);
+    wselect.splice(session);
+    udir.splice(session);
+    ureq.splice(session);
+    attempts.splice(session);
+    cleanArray(ureq);
+    cleanArray(socks);
+    cleanArray(users);
+    cleanArray(userloc);
+    cleanArray(wselect);
+    cleanArray(attempts);
+    cleanArray(udir);
+  });
+  
+  socket.on('login', function(u, p) {
+      requestMade(this.id);
+      u = u.replace(/\//g, "");
+      u = u.replace(/\\"/g, "");
+      u = u.replace(bwords, "");
+      p = p.replace(bwords, "");
+      p = p.replace(/\//g, "");
+      p = p.replace(/\\"/g, "");
+      u = u.replace(badstuff, "");
+      u = u.replace('notlogged', "newuser");
+      u = sanitizer.sanitize(u);
+      p = sanitizer.sanitize(p);
+      session = this.id.toString();
+      var exists;
+      attempts[socks.indexOf(session)] += 1;
+      if (attempts[socks.indexOf(session)] > 10) { //if too many attempted logins
+        console.log("Too many attempts!");
+      }
+      if (u.trim().length !== 0 && p.trim().length !== 0 && u.length <= 25 && users[socks.indexOf(session)] == "notlogged") {
+        for (var i = 0; i < userinfo.items.length; i++) {
+          if (userinfo.items[i].name == u) {
+            exists = true;
+          }
+        }
+        if (!exists && p.length <= 25) {
+          userinfo.insert({name: u, password: encryptor.encrypt(p)});
+          socket.emit('newstat', "Account: '" + u + "' was created.");
+          socket.emit('success', u);
+          users[socks.indexOf(session)] = u;
+          //new user directory
+          mkdirp('./userdata/' + u + '/documents', function (err) {
+            if (err) {
+              console.error(err);
+            }
+            else {
+              //create database
+              var filedb = new locallydb('./userdata/' + u +  '/filedb');
+              var files = filedb.collection('files');
+              files.insert({name: "welcome", tags:[""], recent: "welcome", scroll:"0"});
+              //create welcome file
+              createFile('./userdata/' + u + '/documents/welcome', '<b>Hello. Welcome to my note taker app.</b>', function (err) {
+                if (err) {
+                  return err;
+                }
+                else {
+                  wselect[session] = "welcome";
+                  socket.join(u);
+                  socket.emit('isnew');
+                }
+              });
+            }
+          });
+        }
+        else if (!exists && p.length > 25) {
+          socket.emit("newstat", "Password too big. (25 max)");
+        }
+        else if (encryptor.decrypt(userinfo.where({name: u}).items[0].password) == p) {
+          socket.emit('newstat', "Welcome, " + u);
+          socket.emit('success', u);
+          users[socks.indexOf(session)] = u;
+        }
+        
+        else if (userinfo.where({name: u}).items[0].name !== undefined) {
+          socket.emit('newstat', "Incorrect password!");
+        }
+      }
+      else if (u.length > 25){
+        socket.emit('newstat', "Username too long. (25 max)");
+      }
+      else {
+        socket.emit('newstat', "Invalid username or password.");
+      }
+  });
+  
+  socket.on('logout', function() {
+    requestMade(this.id);
+    socket.emit('refresh');
+  });
+
+  socket.on('changepass', function(o, n) {
+    requestMade(this.id);
+    o = o.replace(/\//g, "");
+    o = o.replace(/\\"/g, "");
+    o = o.replace(bwords, "");
+    n = n.replace(bwords, "");
+    n = n.replace(/\//g, "");
+    n = n.replace(/\\"/g, "");
+    o = sanitizer.sanitize(o);
+    n = sanitizer.sanitize(n);
+    session = socks.indexOf(this.id).toString();
+    if (n.length >= 25) {
+      socket.emit("newstat", "Password too long. (25 max)");
+    }
+	  else if (o == encryptor.decrypt(userinfo.where({name: users[session]}).items[0].password) && users[session] !== "notlogged") {
+  	    socket.emit('newstat', "Password changed.");
+  	    socket.emit('passchanged');
+  	    userinfo.update(userinfo.where({name: users[session]}).items[0].cid, {password: encryptor.encrypt(n)});
+	  }
+	  else {
+	    socket.emit('newstat', "Incorrect password.");
+	  }
+  });
+  
+  socket.on('checkdir', function(isf, fname) {
+    requestMade(this.id);
+    session = socks.indexOf(this.id).toString();
+    var ftype = [];
+    var it = 0;
+    if (users[session] != "notlogged") {
+      if (!isf) {
+        fname = "";
+      }
+      file.walkSync("./userdata/" + users[session] + "/documents" + "/" + fname,  function(path, folders, files) {
+        if (it == 0) {
+          it++;
+          var nof = 0;
+          files.sort();
+          folders.sort();
+          for (var i = 0; i < folders.length; i++) {
+            ftype.push('foldbutton');
+            nof++;
+          }
+          for (var j = 0; j < files.length; j++) {
+            ftype.push('filebutton');
+          }
+          udir[session] = folders.concat(files);
+          var filedb = new locallydb('./userdata/' + users[session] +  '/filedb');
+          var files = filedb.collection('files');
+          var ft = files.items;
+          var spectags = [];
+          var ftags = [];
+          ft.sort(compare);
+          for (var i = 0; i < ft.length; i++) {
+            if (ft[i].tags !== [] && ft[i].tags !== "" && ft[i].tags !== [""] && ft[i].tags !== ['']) {
+              spectags.push(ft[i].tags);
+              for (var j = 0; j < ft[i].tags.length; j++) {
+                if (!(inArray(ftags, ft[i].tags[j])) && ft[i].tags[j] !== "") {
+                  ftags.push(ft[i].tags[j]);
+                }
+              }
+            }
+          }
+          var latest = userinfo.get(userinfo.where({name: users[session]}).items[0].cid).recent;
+          socket.emit('returndir', udir[session], ftags, spectags, latest, ftype, nof);
+        }
+      });
+    }
+  });
+  
+  //Thanks Web_Designer on SE (sort objects)
+  function compare(a,b) {
+  if (a.name < b.name)
+    return -1;
+  if (a.name > b.name)
+    return 1;
+  return 0;
+  }
+  
+  socket.on('openfile', function(r, folder) {
+    requestMade(this.id);
+    r = r.replace(bwords, "");
+    r = r.replace(/\//g, "");
+    r = r.replace(/\\"/g, "");
+    r = r.replace(badstuff, "");
+    r = sanitizer.sanitize(r);
+    session = socks.indexOf(this.id);
+    var mydir = udir[session];
+    var oldex;
+    if (mydir !== undefined) {
+      for (var i = 0; i < mydir.length; i++) {
+        if (mydir[i] == r) {
+          oldex = true;
+          if (mydir[i] !== r) {
+            oldex = false;
+            socket.emit('newstat', "File not selected");
+          }
+        }
+      }
+      if (r.trim().length !== 0) {
+        if (users[session] !== "notlogged") {
+          fs.readFile('./userdata/' + users[session] + "/documents/" + r, function(err, data) {
+            if (err) {
+              return err;
+            }
+            else {
+              filecontents = data.toString();
+              filecontents = encryptor.decrypt(filecontents);
+              var filedb = new locallydb('./userdata/' + users[session] +  '/filedb');
+              var files = filedb.collection('files');
+              var ftags = files.where({name: r}).items[0].tags;
+              var state = files.where({name: r}).items[0].scroll;
+              userinfo.update(userinfo.where({name: users[session]}).items[0].cid, { recent: r });
+              wselect[session] = r;
+              socket.emit('paste', filecontents, r, ftags, state, folder);
+            }
+          });
+        }
+      }
+    }
+  });
+  
+  socket.on('savefile', function(f, d, auto, s, state) {
+    requestMade(this.id);
+    //regex
+    f = f.replace(bwords, "");
+    f = f.replace(/\//g, "");
+    f = f.replace(/\\"/g, "");
+    f = f.replace(badstuff, "");
+    f = sanitizer.sanitize(f);
+    d = encryptor.encrypt(d);
+    var mydir = udir[session];
+    var oldex;
+    socket.emit('newstat', "File saving...", "mid");
+    if (mydir !== undefined) {
+      for (var i = 0; i < mydir.length; i++) {
+        if (mydir[i] == f) {
+          oldex = true;
+          if (mydir[i] !== f) {
+            oldex = false;
+            socket.emit('newstat', "File not selected");
+          }
+        }
+      }
+      session = socks.indexOf(this.id);
+      if (f.trim().length !== 0 && oldex && f.length <= 16 && !tooBig()) {
+        if (users[session] !== "notlogged") {
+          fs.writeFile('./userdata/' + users[session] + "/documents/" + f, d, function(err) {
+            if (err) {
+                return console.log(err);
+            }
+            else {
+              if (userinfo.where({name: users[session]}).items[0] !== undefined) {
+                userinfo.update(userinfo.where({name: users[session]}).items[0].cid, { recent: f });
+                var filedb = new locallydb('./userdata/' + users[session] +  '/filedb');
+                var files = filedb.collection('files');
+                files.update(files.where({name: f}).items[0].cid, {scroll: state});
+                socket.emit('newstat', f + " was saved.");
+
+                if (auto) {
+                  socket.emit('doneauto', s);
+                }
+                else {
+                  socket.emit('donesave');
+                }
+              }
+            }
+          });
+        }
+      }
+      else if (tooBig()) {
+        socket.emit('newstat', "File too big to save.");
+      }
+      else if (f.length > 16) {
+        socket.emit('newstat', "File name too long. (16 max)");
+      }
+      else if (!oldex) {
+        socket.emit('newstat', "File nonexistant.");
+      }
+    }
+  });
+  socket.on('newfile', function(f, tag) {
+    requestMade(this.id);
+    f = f.replace(bwords, "");
+    f = f.replace(/\//g, "");
+    f = f.replace(/\\"/g, "");
+    f = f.replace(badstuff, "");
+    f = sanitizer.sanitize(f);
+    var exists;
+    session = socks.indexOf(this.id);
+    fs.readdir('./userdata/' + users[session] + '/documents', function(err, files) {
+      if (err) {
+        return err;
+      }
+      else {
+        for (var i = 0; i < files.length; i++) {
+          if (files[i] == f) {
+            exists = true;
+          }
+        }
+        if (!exists) {
+          if (f.trim().length !== 0 && f.length <= 16) {
+            if (users[session] !== "notlogged") {
+              socket.emit('succesfulnew');
+              createFile('./userdata/' + users[session] + "/documents/" + f, 'new note', function (err) {
+                if (err) {
+                  return err;
+                }
+                else {
+                  socket.emit('select', f);
+                  wselect[session] = f;
+                  socket.emit('newstat', "File created.");
+                  socket.emit('opennew', f);
+                  var filedb = new locallydb('./userdata/' + users[session] +  '/filedb');
+                  var files = filedb.collection('files');
+                  files.insert({name: f, tags: [tag]});
+                  userinfo.update(userinfo.where({name: users[session]}).items[0].cid, { recent: f });
+                }
+              });
+            }
+          }
+          else if (f.length > 16) {
+            socket.emit('newstat', "File name too long.");
+          }
+        }
+        else if (exists) {
+          socket.emit('newstat', "File already exists.");
+        }
+      }
+    });
+  });
+  
+  socket.on('renamefile', function(f, name) {
+    requestMade(this.id);
+    f = f.replace(bwords, "");
+    f = f.replace(/\//g, "");
+    f = f.replace(/\\"/g, "");
+    f = f.replace(badstuff, "");
+    f = sanitizer.sanitize(f);
+    name = sanitizer.sanitize(name);
+    name.replace(badstuff, "");
+    session = socks.indexOf(this.id);
+    name.replace(bwords, "");
+    name.replace(/\//g, "");
+    name.replace(/\\"/g, "");
+    var mydir = udir[session];
+    var oldex;
+    var already;
+    if (mydir !== undefined) {
+      for (var i = 0; i < mydir.length; i++) {
+        if (mydir[i] == f) {
+          oldex = true;
+          if (mydir[i] !== f) {
+            oldex = false;
+            socket.emit('newstat', "File not selected");
+          }
+        }
+        if (mydir[i] == name && mydir[i] !== f) {
+          already = true;
+        }
+      }
+      if (f !== "" && name !== "" && name.length <= 16 && oldex && !already) {
+        if (f.trim().length !== 0 && name.trim().length !== 0) {
+          fs.rename("./userdata/" + users[session] + "/documents/" + f, "./userdata/" + users[session] + "/documents/" + name, function(err) {
+            if (err) {
+              return console.log(err);
+            }
+            else {
+              socket.emit('select', name);
+              socket.emit("newstat", "File renamed.");
+              wselect[session] = name;
+              var filedb = new locallydb('./userdata/' + users[session] +  '/filedb');
+              var files = filedb.collection('files');
+              files.update(files.where({name: f}).items[0].cid, {name: name});
+            }
+          });
+        }
+      }
+      else if (already) {
+        socket.emit('newstat', "Name already taken.");
+      }
+      else if (!oldex) {
+        socket.emit("newstat", "File does not exist.");
+      }
+      else if (name.length > 16) {
+        socket.emit("newstat", "File name too long. (16 max)");
+      }
+      else if (name == "") {
+        socket.emit("newstat", "Name cannot be empty.");
+      }
+    }
+  });
+  
+  socket.on('deletefile', function(f) {
+    requestMade(this.id);
+    f = f.replace(bwords, "");
+    f = f.replace(/\//g, "");
+    f = f.replace(/\\"/g, "");
+    f = f.replace(badstuff, "");
+    f = sanitizer.sanitize(f);
+    session = socks.indexOf(this.id).toString();
+    var mydir = udir[session];
+    var oldex;
+    if (mydir !== undefined) {
+      for (var i = 0; i < mydir.length; i++) {
+        if (mydir[i] == f) {
+          oldex = true;
+          if (mydir[i] !== f) {
+            oldex = false;
+            socket.emit('newstat', "File not selected");
+          }
+        }
+      }
+      if (f.trim().length !== 0 && oldex) {
+        if (users[session] !== "notlogged") {
+          var filedb = new locallydb('./userdata/' + users[session] +  '/filedb');
+          var files = filedb.collection('files');
+          files.remove(files.where({name: f}).items[0].cid);
+          fs.readdir('./userdata/' + users[session] + '/documents', function(err, files) {
+            if (err) {
+              return err;
+            }
+            else {
+              socket.emit('newstat', f + " was deleted.");
+              fs.unlink("./userdata/" + users[session] + "/documents/" + f, function(err) {
+               if (err) {
+                 return err;
+               }
+               else {
+                  userinfo.update(userinfo.where({name: users[session]}).items[0].cid, { recent: ""});
+                  socket.emit('newstat', f + " was deleted.");
+                  socket.emit('donedelete');
+               }
+              });
+            }
+          });
+        }
+      }
+    }
+  });
+  
+  socket.on('tagup', function(d, f) {
+    requestMade(this.id);
+    f = f.replace(bwords, "");
+    f = f.replace(/\//g, "");
+    f = f.replace(/\\"/g, "");
+    f = f.replace(badstuff, "");
+    f = sanitizer.sanitize(f);
+    for (var i = 0; i < d.length; i++) {
+      d[i] = sanitizer.sanitize(d[i]);
+      d[i] = d[i].replace(/\//g, "");
+      d[i] = d[i].replace(/\\"/g, "");
+      d[i] = d[i].replace(badstuff, "");
+      d[i] = d[i].replace(bwords, "");
+    }
+    session = socks.indexOf(this.id).toString();
+    if (f.trim().length !== 0 && users[session] !== "notlogged") {
+      var filedb = new locallydb('./userdata/' + users[session] +  '/filedb');
+      var files = filedb.collection('files');
+      files.update(files.where({name: f}).items[0].cid, {tags: d});
+      socket.emit('newstat', "Tags updated.");
+      socket.emit('donetag');
+      socket.emit('pastetag', d);
+    }
+    else if (f.trim().length == 0) {
+      socket.emit('newstat', "Nothing selected.");
+    }
+  });
+
+  
+  function tooBig(string) {
+    var size = Buffer.byteLength(string, 'utf8');
+    if (size > maxfile) {
+      return true;
+    }
+    if (size < maxfile) {
+      return false;
+    }
+  }
+  
+  function requestMade(id) {
+    if (!dcing) {
+      session = socks.indexOf(id);
+      if (ureq[session] >= 50) {
+        dcing = true;
+        socket.disconnect();
+        setTimeout(function() {
+          dcing = false;
+        }, 1500);
+      }
+      ureq[session] += 1;
+      setTimeout(function() {
+        ureq[session] -= 1;
+      }, 1000);
+    }
+  }
+
+//end
+});
+
+//server.timeout = 0;
+server.listen(process.env.PORT || 3000, process.env.IP || "0.0.0.0", function(){
+  var addr = server.address();
+  console.log("Server listening at: ", addr.address + ":" + addr.port);
+});
